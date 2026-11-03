@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Boule de Suif – A Reading Journey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--sky:#DCE6EE;--hill:#C3D3DF;--snow:#F4F8FB;--ink:#1E2933;--panel:#FBF6EA;--wine:#7A2332;--accent:#7A2332;--dark:#3B3033;--gold:#E9D8B4;--soft:#F3D9DD;--mute:#4A6073;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--sky:#17212A;--hill:#22323F;--snow:#2C3E4B;--ink:#EDE7D8;--panel:#26323B;--accent:#E8A9B2;--soft:#4A2A32;--mute:#A9BCCB}}
+:root[data-theme="dark"]{--sky:#17212A;--hill:#22323F;--snow:#2C3E4B;--ink:#EDE7D8;--panel:#26323B;--accent:#E8A9B2;--soft:#4A2A32;--mute:#A9BCCB}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--sky);color:var(--ink);font-family:'Karla',system-ui,sans-serif}
+#map{position:relative;max-width:900px;margin:0 auto;background:var(--snow);padding-bottom:60vh}
+#scene{width:100%;height:auto;display:block}
+#qs{position:absolute;left:0;top:0;width:100%;aspect-ratio:900/3200;pointer-events:none}
+.q{position:absolute;width:36%;transform:translateY(-40%);opacity:0;transition:opacity .8s,transform .8s;font:italic 500 clamp(14px,2.3vw,20px)/1.3 'Cormorant Garamond',serif;color:var(--mute)}
+.q.on{opacity:.8;transform:translateY(-50%)}
+.q small{display:block;margin-top:4px;font:500 clamp(10px,1.4vw,12px)/1.3 'Karla',sans-serif;color:var(--mute)}
+.fit{position:relative;overflow:auto;border-radius:20px}.fitin{position:absolute;left:0;top:0;width:1890px;height:1417px;transform-origin:0 0}
+.intro{position:absolute;left:6%;top:28px;max-width:88%;pointer-events:none}
+.intro small{display:block;font-size:clamp(11px,1.6vw,15px);letter-spacing:.3em;text-transform:uppercase;font-weight:700;color:var(--mute)}
+.intro h1{margin:.1em 0 0;font:700 clamp(44px,9vw,84px)/1 'Cormorant Garamond',serif}
+.intro p{margin:.5em 0 0;font-size:clamp(14px,2vw,18px);color:var(--mute)}
+#hint{position:fixed;z-index:3;bottom:4vh;left:50%;transform:translateX(-50%);background:var(--dark);color:#FBF6EA;padding:10px 22px;border-radius:999px;font-weight:700;transition:opacity .4s;pointer-events:none}
+#tip{position:fixed;z-index:5;max-width:240px;background:var(--dark);color:#FBF6EA;padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.35;pointer-events:none;opacity:0;transition:opacity .15s}
+#tip.on{opacity:1}
+.hit{cursor:pointer;outline:none}
+.hit:focus-visible .ring{stroke:var(--accent);stroke-width:6}
+.pin{opacity:0;transition:opacity .5s}
+.pin.on{opacity:1}
+.pin .dot{transition:transform .3s;transform-box:fill-box;transform-origin:center}
+.pin.on:hover .dot,.pin.on:focus-visible .dot{transform:scale(1.18)}
+.pin.lock{filter:saturate(.4)}
+dialog{width:min(1200px,96vw);max-height:90vh;border:0;border-radius:24px;padding:0;background:var(--panel);color:var(--ink)}
+dialog::backdrop{background:rgba(23,33,42,.6)}
+.in{display:flex;flex-direction:column;max-height:90vh}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 28px 8px}
+.bar h2{margin:0;font:700 clamp(26px,4vw,40px)/1.1 'Cormorant Garamond',serif;color:var(--accent)}
+#x{border:0;background:var(--dark);color:#FBF6EA;width:42px;height:42px;border-radius:50%;font-size:24px;cursor:pointer}
+#tabs{display:flex;flex-wrap:wrap;gap:8px;padding:8px 28px}
+#tabs button{border:2px solid var(--dark);background:transparent;color:var(--ink);border-radius:999px;padding:8px 18px;font:700 15px 'Karla',sans-serif;cursor:pointer}
+#tabs button[aria-selected="true"]{background:var(--wine);border-color:var(--wine);color:#FBF6EA}
+#body{overflow:auto;padding:12px 28px 28px;line-height:1.6;font-size:17px}
+#body h3{font:700 28px/1.1 'Cormorant Garamond',serif;color:var(--accent);margin:0 0 8px}
+#body p{margin:0 0 12px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.card{background:var(--sky);border-radius:20px;padding:18px 22px}
+.card.full{grid-column:1/-1}
+.card.dark{background:var(--wine);color:#FBF6EA}
+.card.dark h3{color:var(--soft)}
+.big{font:italic 500 26px/1.3 'Cormorant Garamond',serif}
+ol{margin:0;padding-left:22px}
+li{margin-bottom:6px}
+li.hi{background:var(--soft);border-radius:8px;padding:2px 8px}
+.essay h3{font-size:34px}
+.ph{background:var(--soft);padding:0 4px;border-radius:4px;font-weight:700}
+.ref{padding-left:2em;text-indent:-2em;overflow-wrap:anywhere}
+a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div id="map">
+<svg id="scene" viewBox="0 0 900 3200" aria-label="A long snowy road from Rouen. Scroll down to move the coach.">
+<defs>
+<linearGradient id="fg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--snow)" stop-opacity="0"/><stop offset=".05" style="stop-color:var(--snow)" stop-opacity=".96"/><stop offset="1" style="stop-color:var(--snow)"/></linearGradient>
+<g id="pine"><path d="M0 -150 L50 -50 H22 L64 20 H-64 L-22 -50 H-50 Z" style="fill:var(--mute);opacity:.55"/><rect x="-8" y="20" width="16" height="26" style="fill:var(--dark)"/></g>
+</defs>
+<rect width="900" height="3200" style="fill:var(--sky)"/>
+<circle cx="740" cy="120" r="52" fill="#F6EFE0"/>
+<path d="M0 380 Q225 300 450 360 T900 340 V3200 H0Z" style="fill:var(--hill)"/>
+<path d="M0 480 Q225 430 450 470 T900 450 V3200 H0Z" style="fill:var(--snow)"/>
+<use href="#pine" x="110" y="720"/><use href="#pine" x="780" y="1020"/><use href="#pine" x="100" y="1480"/><use href="#pine" x="790" y="1780"/><use href="#pine" x="120" y="2260"/><use href="#pine" x="780" y="2520"/><use href="#pine" x="110" y="2960"/>
+<path id="road" d="M450 300 C200 600 700 800 450 1100 S200 1600 450 1900 S700 2400 450 2700 S300 3000 450 3100" fill="none" style="stroke:var(--hill)" stroke-width="34" stroke-linecap="round" stroke-dasharray="2 24"/>
+<path id="walk" d="M450 300 C200 600 700 800 450 1100 S200 1600 450 1900 S700 2400 450 2700 S300 3000 450 3100" fill="none" stroke="#3B3033" stroke-width="34" stroke-linecap="round"/>
+<g fill="#FFF" opacity=".9"><circle cx="80" cy="200" r="6"/><circle cx="300" cy="120" r="5"/><circle cx="520" cy="230" r="6"/><circle cx="840" cy="620" r="5"/><circle cx="60" cy="1200" r="6"/><circle cx="850" cy="1500" r="6"/><circle cx="70" cy="2000" r="5"/><circle cx="840" cy="2300" r="6"/></g>
+<rect id="fog" x="0" y="900" width="900" height="3200" fill="url(#fg)" pointer-events="none"/>
+<g class="pin" data-f=".05" data-k="intro" tabindex="0" role="button" aria-label="1. Introduction, Rouen"><g class="hit"><g class="dot"><circle class="ring" r="30" fill="#7A2332" stroke="#FBF6EA" stroke-width="5"/><text y="10" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="32" font-weight="700" fill="#FBF6EA">1</text></g><text y="-72" text-anchor="middle" font-family="Karla,sans-serif" font-size="32" font-weight="700" style="fill:var(--ink);stroke:var(--sky);stroke-width:7;paint-order:stroke">Introduction</text><text y="-44" text-anchor="middle" font-family="Karla,sans-serif" font-size="24" font-weight="500" style="fill:var(--mute);stroke:var(--sky);stroke-width:6;paint-order:stroke">Rouen</text></g></g>
+<g class="pin" data-f=".17" data-k="story" tabindex="0" role="button" aria-label="2. Story map, On the road"><g class="hit"><g class="dot"><circle class="ring" r="30" fill="#7A2332" stroke="#FBF6EA" stroke-width="5"/><text y="10" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="32" font-weight="700" fill="#FBF6EA">2</text></g><text y="-72" text-anchor="middle" font-family="Karla,sans-serif" font-size="32" font-weight="700" style="fill:var(--ink);stroke:var(--sky);stroke-width:7;paint-order:stroke">Story map</text><text y="-44" text-anchor="middle" font-family="Karla,sans-serif" font-size="24" font-weight="500" style="fill:var(--mute);stroke:var(--sky);stroke-width:6;paint-order:stroke">On the road</text></g></g>
+<g class="pin" data-f=".30" data-k="char" tabindex="0" role="button" aria-label="3. Character analysis, A place to eat"><g class="hit"><g class="dot"><circle class="ring" r="30" fill="#7A2332" stroke="#FBF6EA" stroke-width="5"/><text y="10" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="32" font-weight="700" fill="#FBF6EA">3</text></g><text y="-72" text-anchor="middle" font-family="Karla,sans-serif" font-size="32" font-weight="700" style="fill:var(--ink);stroke:var(--sky);stroke-width:7;paint-order:stroke">Character analysis</text><text y="-44" text-anchor="middle" font-family="Karla,sans-serif" font-size="24" font-weight="500" style="fill:var(--mute);stroke:var(--sky);stroke-width:6;paint-order:stroke">A place to eat</text></g></g>
+<g class="pin" data-f=".52" data-k="plot" tabindex="0" role="button" aria-label="4. Plot diagram, The inn at Tôtes"><g class="hit"><g class="dot"><circle class="ring" r="30" fill="#7A2332" stroke="#FBF6EA" stroke-width="5"/><text y="10" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="32" font-weight="700" fill="#FBF6EA">4</text></g><text y="-72" text-anchor="middle" font-family="Karla,sans-serif" font-size="32" font-weight="700" style="fill:var(--ink);stroke:var(--sky);stroke-width:7;paint-order:stroke">Plot diagram</text><text y="-44" text-anchor="middle" font-family="Karla,sans-serif" font-size="24" font-weight="500" style="fill:var(--mute);stroke:var(--sky);stroke-width:6;paint-order:stroke">The inn at Tôtes</text></g></g>
+<g class="pin" data-f=".90" data-k="refl" tabindex="0" role="button" aria-label="5. Reflection, The road onward"><g class="hit"><g class="dot"><circle class="ring" r="30" fill="#7A2332" stroke="#FBF6EA" stroke-width="5"/><text y="10" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="32" font-weight="700" fill="#FBF6EA">5</text></g><text y="-72" text-anchor="middle" font-family="Karla,sans-serif" font-size="32" font-weight="700" style="fill:var(--ink);stroke:var(--sky);stroke-width:7;paint-order:stroke">Reflection</text><text y="-44" text-anchor="middle" font-family="Karla,sans-serif" font-size="24" font-weight="500" style="fill:var(--mute);stroke:var(--sky);stroke-width:6;paint-order:stroke">The road onward</text></g></g>
+<g id="car" class="hit" tabindex="0" role="button" aria-label="The coach, which is me. Open About me.">
+<g transform="scale(1.15)">
+<ellipse cx="0" cy="4" rx="120" ry="10" fill="#3B3033" opacity=".18"/>
+<path d="M-108 -100 Q0 -178 108 -100Z" fill="#3B3033"/><path d="M-100 -104 Q0 -176 100 -104" fill="none" stroke="#FFF" stroke-width="7" stroke-linecap="round"/>
+<rect x="-96" y="-104" width="192" height="78" rx="14" fill="#7A2332"/>
+<rect x="-80" y="-90" width="44" height="40" rx="8" fill="#FBF6EA"/><rect x="-22" y="-90" width="44" height="40" rx="8" fill="#FBF6EA"/><rect x="36" y="-90" width="44" height="40" rx="8" fill="#FBF6EA"/>
+<rect x="-96" y="-44" width="192" height="6" fill="#E9D8B4"/>
+<circle class="ring" cx="-56" cy="-22" r="24" fill="#FBF6EA" stroke="#3B3033" stroke-width="9"/><circle class="ring" cx="56" cy="-22" r="24" fill="#FBF6EA" stroke="#3B3033" stroke-width="9"/>
+</g></g>
+</svg>
+<div id="qs"></div>
+<div class="intro"><small>Portfolio by Xiao Yuhan · ENGL 1601</small><h1>Boule de Suif</h1><p>Scroll down to follow my portfolio along the road. The coach is me.</p></div>
+</div>
+<div id="hint">Scroll down to travel ↓</div>
+<div id="tip" role="status"></div>
+<dialog id="dlg" aria-labelledby="dt"><div class="in"><div class="bar"><h2 id="dt"></h2><button id="x" aria-label="Close">×</button></div><div id="tabs" role="tablist"></div><div id="body"></div></div></dialog>
+<script>
+const MAP=`<div class="grid2">
+<div class="card full"><h3>Title</h3><p class="big">“Boule de Suif”</p></div>
+<div class="card"><h3>Setting</h3><p><b>When:</b> Winter, 1870–71, during the Franco-Prussian War.</p><p><b>Where:</b> Normandy, France: a cramped carriage leaving Rouen in a snowstorm, then an inn in Tôtes.</p></div>
+<div class="card"><h3>Characters</h3><p><b>Protagonist:</b> Boule de Suif, kind, generous and patriotic, yet despised as a prostitute.</p><p><b>Antagonist:</b> the “respectable” passengers: a wine merchant, a factory owner, a count and their wives.</p></div>
+<div class="card full"><h3>Plot / Events</h3><ol><li><b>Beginning:</b> Passengers flee Rouen; the “respectable” ones snub Boule de Suif.</li><li><b>Rising action:</b> She shares her food, and they warm up to her.</li><li class="hi"><b>Climax:</b> At the inn, a Prussian officer demands she sleep with him, and the others pressure her.</li><li><b>Ending:</b> She yields, then they shun her and refuse her food.</li></ol></div>
+<div class="card full dark"><h3>Theme</h3><p class="big">Society’s “respectable” people are often selfish hypocrites, while the person they despise may be the one with real kindness and integrity.</p></div></div>`;
+const STEAL=`<div class="grid2">
+<div class="card"><h3>S · Speech</h3><p>Sent to the officer through the innkeeper: “I shall never change it; you understand, never, never, never!”</p><p>The ladies stay “amiable toward her” only “to increase her docility.”</p></div>
+<div class="card"><h3>T · Thought</h3><p>Believes the enemy deserves her hatred; her patriotism is felt, not performed.</p><p>Believes in her dignity: she will run from the war, but not be humiliated by the enemy.</p></div>
+<div class="card"><h3>E · Effect on Others</h3><p>Snubbed, welcomed when she shares, pressured, then shunned.</p><p>The group treats her “like some improper or useless article.”</p></div>
+<div class="card"><h3>A · Actions</h3><p>Flees Rouen to survive, shares her basket, refuses the officer.</p><p><b>Change:</b> from generous and defiant to worn down and silent.</p></div>
+<div class="card"><h3>L · Looks</h3><p>Plump and round: “Ball of Fat” reduces her to a body.</p><p>Mocked for her looks, yet her body and food sustain everyone.</p></div>
+<div class="card dark"><h3>My claim (X, Y, Z)</h3><p>As shown by her speech, her actions, and the way others treat her, Boule de Suif exhibits a genuine patriotism and moral integrity that contrast with the calculated hypocrisy of those around her.</p></div></div>`;
+const MTN=`<svg viewBox="0 0 1580 540" style="width:100%;height:auto;margin-bottom:16px" role="img" aria-label="Plot mountain with five numbered plot elements, from exposition on the left to resolution on the right"><rect width="1580" height="540" rx="28" style="fill:var(--sky)"/><circle cx="1400" cy="80" r="44" fill="#F6EFE0"/><path d="M0 470 L240 395 L480 450 L740 320 L1050 470 L1330 400 L1580 490 V540 H0Z" style="fill:var(--hill)"/><path d="M0 520 L260 505 L940 90 L1330 400 L1580 490 V540 H0Z" fill="#7A2332"/><path d="M940 90 L852 150 L900 138 L940 172 L982 138 L1012 152Z" fill="#FBF6EA"/><g stroke="#FBF6EA" stroke-width="6"><circle cx="130" cy="512" r="30" fill="#3B3033"/><circle cx="600" cy="297" r="30" fill="#3B3033"/><circle cx="940" cy="90" r="30" fill="#7A2332"/><circle cx="1135" cy="245" r="30" fill="#3B3033"/><circle cx="1500" cy="461" r="30" fill="#3B3033"/></g><g font-family="Cormorant Garamond,serif" font-size="36" font-weight="700" fill="#FBF6EA" text-anchor="middle" dominant-baseline="central"><text x="130" y="514">1</text><text x="600" y="299">2</text><text x="940" y="92">3</text><text x="1135" y="247">4</text><text x="1500" y="463">5</text></g><g font-family="Karla,sans-serif" font-size="34" font-weight="700" style="fill:var(--ink);stroke:var(--sky);stroke-width:8;paint-order:stroke" text-anchor="middle"><text x="130" y="455">Exposition</text><text x="640" y="245">Rising action</text><text x="940" y="44">Climax</text><text x="1190" y="190">Falling action</text><text x="1500" y="405">Resolution</text></g></svg>
+<div class="grid2">
+<div class="card dark"><h3>Internal conflict (man vs. self)</h3><p>During the rising action, Boule de Suif is torn between her patriotic pride and dignity and her wish to help the stranded group and stop being blamed.</p></div>
+<div class="card dark"><h3>External conflict (man vs. society)</h3><p>During the rising action, she faces the “respectable” passengers, who flatter and pressure her, and the Prussian officer who traps the coach.</p></div>
+<div class="card"><h3>1 · Exposition</h3><p>Winter, 1870–71, during the Franco-Prussian War. Ten travelers flee Rouen by coach in a snowstorm. The “respectable” passengers snub Boule de Suif, a prostitute, and the main conflict appears: an outcast among people who judge her.</p></div>
+<div class="card"><h3>2 · Rising action</h3><p>Stranded and hungry, the group accepts her food; the Count says, “We accept with gratitude, Madame” (Maupassant, n.d., chap. 6). At the inn in Tôtes, a Prussian officer refuses to let the coach leave unless she sleeps with him. She refuses, and the others begin to pressure her.</p></div>
+<div class="card"><h3>3 · Climax</h3><p>The group’s flattery and arguments finally wear her down, and she gives in to the officer. This is the turning point: once she yields, everything goes terribly wrong and the ending becomes inevitable.</p></div>
+<div class="card"><h3>4 · Falling action</h3><p>The coach is allowed to leave. The passengers who begged her for help now shun her, and they take out their own food and eat while she has none.</p></div>
+<div class="card full"><h3>5 · Resolution</h3><p>The journey continues. She weeps in silence, treated “like some improper or useless article” (Maupassant, n.d., chap. 13). The hypocrisy goes unpunished, and the outcast remains an outcast.</p></div></div>`;
+const CAR=`<div class="fit"><div class="sp"></div><div class="fitin"><div style="position: relative; width: 1890px; height: 1417px; background: #DCE6EE; color: #1E2933; font-family: 'Karla', sans-serif; overflow: hidden">
+
+<svg width="1890" height="1417" viewBox="0 0 1890 1417" style="position: absolute; left: 0; top: 0" aria-hidden="true">
+<circle cx="1700" cy="120" r="62" fill="#F6EFE0"/>
+<path d="M0 1180 Q300 1060 620 1150 T1250 1130 T1890 1120 V1417 H0 Z" fill="#C3D3DF"/>
+<rect x="0" y="1290" width="1890" height="127" fill="#F4F8FB"/>
+<ellipse cx="945" cy="1335" rx="900" ry="26" fill="#DCE6EE"/>
+
+<rect x="100" y="270" width="1690" height="800" rx="56" fill="#7A2332"/>
+<rect x="100" y="960" width="1690" height="110" rx="0" fill="#5C1A26"/>
+<rect x="100" y="1020" width="1690" height="50" rx="0" fill="#3B3033"/>
+<rect x="150" y="868" width="1590" height="14" rx="7" fill="#E9D8B4"/>
+<rect x="150" y="892" width="1590" height="6" rx="3" fill="#E9D8B4"/>
+
+<path d="M50 292 Q945 -150 1840 292 Z" fill="#3B3033"/>
+<path d="M50 285 Q945 -157 1840 285" fill="none" stroke="#FFFFFF" stroke-width="18" stroke-linecap="round"/>
+<rect x="50" y="262" width="1790" height="40" rx="20" fill="#5C1A26"/>
+
+<rect x="150" y="320" width="520" height="510" rx="46" fill="#E9D8B4"/>
+<rect x="162" y="332" width="496" height="486" rx="36" fill="#FBF6EA"/>
+<rect x="685" y="320" width="520" height="510" rx="46" fill="#E9D8B4"/>
+<rect x="697" y="332" width="496" height="486" rx="36" fill="#FBF6EA"/>
+<rect x="1220" y="320" width="520" height="510" rx="46" fill="#E9D8B4"/>
+<rect x="1232" y="332" width="496" height="486" rx="36" fill="#FBF6EA"/>
+
+<g stroke="#E9D8B4" stroke-width="10" stroke-linecap="round">
+<circle cx="430" cy="1130" r="205" fill="#3B3033" stroke="none"/>
+<circle cx="430" cy="1130" r="172" fill="#FBF6EA" stroke="none"/>
+<path d="M430 970V1290M270 1130H590M317 1017L543 1243M543 1017L317 1243" opacity="0.7"/>
+<circle cx="1460" cy="1130" r="205" fill="#3B3033" stroke="none"/>
+<circle cx="1460" cy="1130" r="172" fill="#FBF6EA" stroke="none"/>
+<path d="M1460 970V1290M1300 1130H1620M1347 1017L1573 1243M1573 1017L1347 1243" opacity="0.7"/>
+</g>
+<circle cx="430" cy="1130" r="150" fill="#FBF6EA"/>
+<circle cx="1460" cy="1130" r="150" fill="#FBF6EA"/>
+
+<g fill="#FFFFFF">
+<circle cx="120" cy="90" r="9"/><circle cx="260" cy="170" r="6"/><circle cx="420" cy="60" r="8"/><circle cx="560" cy="150" r="5"/><circle cx="1330" cy="70" r="8"/><circle cx="1480" cy="170" r="6"/><circle cx="1580" cy="60" r="5"/><circle cx="1830" cy="190" r="9"/><circle cx="70" cy="540" r="8"/><circle cx="1850" cy="620" r="7"/><circle cx="40" cy="900" r="6"/><circle cx="1860" cy="1000" r="8"/>
+</g>
+</svg>
+
+<div style="position: absolute; left: 420px; top: 112px; width: 1050px; height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center">
+<div style="font-size: 22px; letter-spacing: 7px; text-transform: uppercase; font-weight: 700; color: #E9D8B4">Title</div>
+<div style="font-family: 'Cormorant Garamond', serif; font-size: 96px; line-height: 1; font-weight: 700; color: #FBF6EA">"Boule de Suif"</div>
+</div>
+
+<div style="position: absolute; left: 150px; top: 320px; width: 520px; height: 510px; box-sizing: border-box; padding: 34px 40px; display: flex; flex-direction: column; gap: 16px">
+<div style="font-family: 'Cormorant Garamond', serif; font-size: 50px; font-weight: 700; color: #7A2332">Setting</div>
+<div style="font-size: 27px; line-height: 1.4"><b>When:</b> Winter, 1870–71, during the Franco-Prussian War.</div>
+<div style="font-size: 27px; line-height: 1.4"><b>Where:</b> Normandy, France: a cramped carriage leaving Rouen in a snowstorm, then an inn in Tôtes.</div>
+</div>
+
+<div style="position: absolute; left: 685px; top: 320px; width: 520px; height: 510px; box-sizing: border-box; padding: 30px 38px; display: flex; flex-direction: column; gap: 10px">
+<div style="font-family: 'Cormorant Garamond', serif; font-size: 50px; font-weight: 700; color: #7A2332">Plot / Events</div>
+<div style="font-size: 21px; line-height: 1.32"><b>1 Beginning:</b> Passengers flee Rouen; the "respectable" ones snub Boule de Suif.</div>
+<div style="font-size: 21px; line-height: 1.32"><b>2 Rising action:</b> She shares her food, and they warm up to her.</div>
+<div style="font-size: 21px; line-height: 1.32; background: #F3D9DD; border-radius: 10px; padding: 6px 10px; margin: 0 -10px"><b>3 Climax:</b> At the inn, a Prussian officer demands she sleep with him, and the others pressure her.</div>
+<div style="font-size: 21px; line-height: 1.32"><b>4 Ending:</b> She yields, then they shun her and refuse her food.</div>
+</div>
+
+<div style="position: absolute; left: 1220px; top: 320px; width: 520px; height: 510px; box-sizing: border-box; padding: 34px 40px; display: flex; flex-direction: column; gap: 16px">
+<div style="font-family: 'Cormorant Garamond', serif; font-size: 50px; font-weight: 700; color: #7A2332">Theme</div>
+<div style="font-family: 'Cormorant Garamond', serif; font-size: 35px; line-height: 1.3; font-style: italic; font-weight: 500">Society's "respectable" people are often selfish hypocrites, while the person they despise may be the one with real kindness and integrity.</div>
+</div>
+
+<div style="position: absolute; left: 295px; top: 995px; width: 270px; height: 270px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 6px">
+<div style="font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 700; color: #7A2332">Protagonist</div>
+<div style="font-size: 19px; line-height: 1.3"><b>Boule de Suif:</b> kind, generous and patriotic, yet despised as a prostitute. She refuses the enemy and is betrayed by her own countrymen.</div>
+</div>
+
+<div style="position: absolute; left: 1325px; top: 995px; width: 270px; height: 270px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 6px">
+<div style="font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 700; color: #7A2332">Antagonist</div>
+<div style="font-size: 19px; line-height: 1.3"><b>The "respectable" passengers:</b> a wine merchant, a factory owner, a count and their wives. They push her to give in to the Prussian officer.</div>
+</div>
+
+</div></div></div>`;
+const INTRO=`<h3>Introduction</h3><p>In-depth reading of <i>Boule de Suif</i> (Ball of Fat) has benefited me greatly. I have loved Maupassant’s works since I was a child, and this story left a deep impression on me, so when it came to choosing a text for literary analysis, it was the first thing that came to mind. At first, I thought doing the assignments this way would be easy. But as I completed each one, I gradually came to appreciate the story’s charm more deeply and became more aware of the importance of literary analysis.</p><p>People naturally feel compassion for those at the bottom of society, and with the author’s deliberate guidance, it is easy to be swept away by this slogan-like pity: to empathize with the protagonist and stand up for her. I used to be like that too. Before starting the assignments, I roughly reread the story and summarized the conventional conclusions about Boule de Suif’s patriotism, strength, and kindness—the kind of labels one can easily draw from the text.</p><p>But one afternoon, I started talking with my teacher about this work. He asked me, “Was Boule de Suif really patriotic?” I naturally answered yes, because she had fought a Prussian soldier and insisted on resisting the officer. “But she gave in,” the teacher said. At that moment, I wavered. I could not find more evidence of her patriotism. Emotional pity made me want to defend her, but reason told me it was far from enough. She gave in and was condemned by her companions. I wanted to say she had no choice, but if someone (like those brave patriots on TV) truly loved their country, would she give in? “I don’t know” that was all I could say.</p><p>After that, I began to read more deeply, hoping to find some clue in my favor in this brief plot. She had done so little, and the story was ridiculously short—why had I chosen it? At this point, I began to blame the author: why did Maupassant write about her? Was it just to promote her righteousness and accuse those who were shameless on the journey? If that was all, why did he let Boule de Suif end up like that?</p><p>Story maps, S.T.E.A.L. diagrams, plot diagrams… As I completed these assignments, I read the story in more detail, found more evidence for her actions, and gained a deeper understanding of the plot. I grasped the symbolic meaning of the basket, summarized the irony behind the story, and, most importantly, finally understood Maupassant. Boule de Suif is an underdog. She is so small and humble that both her social status and her personality are marginalized. She cannot fight like those heroes; she retains the ordinary human instinct to seek benefit and avoid harm. What Maupassant actually wants to show is the brilliance people hold subconsciously, like a diamond. It is precisely because they are underdogs that they can hold onto their beliefs at the cost of their own interests; precisely because they are underdogs, they ultimately compromise with the majority; and precisely because they are underdogs, they have such pure dignity—a dignity that people of higher status can put on and take off at will, while she cannot.</p><p>I admire underdogs, and for that reason I have grown even fonder of Boule de Suif. As for that question, this assignment and my research have also given me an answer. She did compromise. But that is precisely what proves the darkness of society and the significance of her marginalization as a small, powerless figure!</p><p>She was patriotic. I am firmly convinced.</p>`;
+const ABOUT=`<h3>About me</h3><p>I am an ordinary student who just loves reading, writing, and drawing. For me, reading is a quiet way to escape reality, writing is how I organize my messy thoughts, and drawing is simply a hobby that makes me happy.</p><p>When I first chose <i>Boule de Suif</i> for this project, I thought it would be easy because it’s such a short story. But it turned out to be much harder than I expected. I struggled to answer my teacher’s question about whether the protagonist was truly patriotic. Through the process of making story maps, drawing diagrams, and writing essays, I learned that literary analysis isn’t just about saying “this character is good” or “that character is bad.” It requires looking closely at the text and questioning my own first impressions.</p><p>I am still a beginner in literary analysis, but this portfolio records my honest journey with this story. I hope you can see my efforts in these pages, and I also hope you enjoy reading them.</p>`;
+const S_T=`<h3>Text</h3><p><i>Boule de Suif</i> by Guy de Maupassant takes place in the winter of 1870–71, during the Franco-Prussian War, as a group of travelers flee Rouen in a crowded carriage. The protagonist, Boule de Suif, is a kind and patriotic prostitute whom the “respectable” passengers look down on, and these same passengers become the antagonists of the story. When the travelers grow hungry, she generously shares her food, and for a moment they treat her warmly. The climax comes at an inn, where a Prussian officer refuses to let the carriage leave unless she sleeps with him. She refuses at first, but the others pressure and manipulate her until she gives in. In the end, once the journey continues, the same people who begged her to help treat her with contempt and will not share their food with her. Through this story, Maupassant shows that society’s “respectable” people are often selfish hypocrites, while the person they despise may be the one with real kindness and integrity.</p>`;
+const S_R=`<h3>My reflection</h3><p>By creating a story map, I gained a more detailed understanding of the time and place of the whole story. Delving into the story is really a completely different feeling compared to reading it just for fun. For example, when you read casually, you wouldn’t pay attention to where the story takes place at all. By checking the map, I learned that Rouen is in the northwest of France, and that when the characters left Rouen, they were moving away from areas occupied by the Prussians. Having this information helps you better understand the characters’ actions and psychology. Story maps are truly a fundamental and indispensable part of literary analysis!</p>`;
+const C_T=`<h3>Text</h3><p>Boule de Suif sits at the bottom of the social order, and the “respectable” passengers never let her forget it. What separates her is not better morals. Her loyalty to her country is something she feels immediately and never calculates, while the others’ patriotism is a mood they put on and take off.</p><p>Her speech shows her loyalty is not reasoned. She leaves Rouen to survive, and so does everyone else, so flight is not what sets her apart. What does her answer when the innkeeper asks whether she has changed her mind about the Prussian officer: “I shall never change it; you understand, never, never, never!” (Maupassant, 1911, Chap. 10). The repeated “never” does not sound like an argument; it sounds like a feeling that comes out before she can turn it into reasons. By the next morning, the same travelers who had been angry at the officer “almost wished now that the Prussian had secretly found this girl” (Chap. 10). The narrator reports this as their private thought, not something said aloud, which makes it worse: their patriotism vanishes once it costs them something, and it vanishes quietly. Hers does not, because for her it was never a calculation. The passengers never argue about whether the officer’s demand is right; they argue only about whether refusing is convenient. Their patriotism has no content. Hers has no argument behind it either, which is why they cannot talk her out of it.</p><p>Her refusal also shows her loyalty is tied to her body and her shame, not a theory. When the officer demands she sleep with him, she refuses and keeps refusing even though the group is stuck because of her. Her resistance is not a principle weighed against the group’s wishes; it is closer to a disgust she cannot talk herself out of. Her profession matters. A woman who sells her body might be expected to treat it as tradable, yet she is the one who refuses to trade it for the group’s comfort. The “respectable” ladies, who would never sell themselves, calmly suggest she should. They stay “amiable toward her” only “to increase her docility,” and at lunch they mention famous women who made “a battlefield of their bodies” (Chap. 10). The example flatters her into seeing herself as heroic, but it also admits what they will not say outright: they are asking her to do exactly what they call shameful in her. They need to be tradable, so their own comfort does not have to be. Maupassant turns the usual hierarchy upside down: the woman called “immoral” is the only one who treats her body as something that cannot be handed over.</p><p>The others then try to talk her out of it. They begin with a religious argument that a bad act can be excused by a good purpose, making self-interest sound like duty; then pressure turns to flattery, and the ladies’ stories are the flattery at its most patient: they dress up the demand as heroism so she will stop resisting it. When she finally “said nothing,” she just listened to those stories and the religious reasoning, and her silence is not agreement. It is the moment she stops trying to answer them, because their logic is not something she can argue with. She cannot argue back, because her loyalty was never an argument, and this inability to calculate is exactly what they exploit.</p><p>The way they treat her shows what her instinct costs. Her plump figure gives her the nickname, reducing her to a body, a resource to use and throw away. When they are hungry, her food keeps them going; after she gives in, they take out their own provisions and eat while she sits in tears. Her body and her food together show how comfortable they use the vulnerable and stop caring once they are no longer useful. Maupassant is not saying she is morally better in a sermon’s sense. He shows that the one society calls “immoral” is the only one who cannot stop feeling, and that this is exactly what makes it easy to use.</p><p>The last scene returns to the food, and that return is the point. The passengers who once ate her provisions now eat their own and leave her with nothing, and her tears are the only answer she has left. Maupassant does not ask us to admire her; he asks us to notice what the coach has done to her. She fled the battlefield of Rouen, but she is the only character who never learned to switch her heart off, and that is why she is destroyed.</p>`;
+const C_R=`<h3>My reflection</h3><p>Compared with a story map, the S.T.E.A.L. diagram makes me focus more on the characters. The part I find challenging is deciding which of the protagonist’s actions to include in the analysis. Since the analysis is limited, I can only pick out the most striking lines. Also, her struggles aren’t described in detail: the author doesn’t spend much time on the main character. So, I chose the passengers’ actions and dialogues as a contrast to reflect the protagonist’s traits. I used to do character analyses a lot in high school, but what’s unique about this chart is the <i>E</i> part. I had never really thought about how her actions affect others, which opened a new perspective for my future reading.</p>`;
+const P_T=`<h3>Text</h3><p>Guy de Maupassant’s Boule de Suif deserves a nomination because it turns a single carriage ride into a precise argument about hypocrisy. Its logical structure of evidence rests on the passengers’ shifting attitudes toward the protagonist: at first they look down on her; when she shares her food, they grow warm; when the carriage is detained, they flatter and persuade her, disguising selfish demands as patriotic duty; and once she yields, they treat her with a coldness even harsher than at the start. The climax, where the group pressures her to give in, is the turning point, because it exposes her plight: she is trapped between her personal morality and the group’s collective hypocrisy. Maupassant sharpens this conflict with irony, since the people who preach sacrifice are the ones who demand it from someone else, and with symbolism, since her food basket, which first buys their friendship, shows how they use her and then discard her. In the final scene, the narrator says they reject her “like some improper or useless article” (Maupassant, 1911, chap. 13), a simile that reduces her to an object. Together, the climax and her plight develop the theme: society’s “respectable” people often wear morality like a removable coat, while the person they despise may be the only one with real integrity.</p>`;
+const P_R=`<h3>My reflection</h3><p>Actually, when I was making the plot diagram, I was really conflicted about which part of the story to put the climax on. The whole novel leans more toward a linear narrative. In most other novels, the conflict is usually the climax, but in this story, the conflict is divided into two parts: the conflict between the protagonist and the Prussian officer, and the conflict between the protagonist and the passengers. Looking at the whole journey, the former should be the climax; but in terms of the theme, it should be the latter. But for me, the protagonist’s tragedy (being isolated and helpless, disappointed in and giving in to the other passengers) is what moves me the most. So, I chose the moment she gives in as the climax. Once the climax is set, the rest becomes pretty simple.</p>`;
+const REFL=`<h3>Reflection</h3><p>When I first started this project, I thought it would be easy. The story is “ridiculously short,” and I had loved Maupassant since I was a child. I assumed the assignments would just confirm my first impressions—that Boule de Suif was simply patriotic, strong, and kind. I didn’t realize at first that I was just repeating the “labels one can easily draw from the text.” I even started to blame the author, wondering why he made the story so short and left me with so little to defend her.</p><p>The real turning point happened during that afternoon conversation with my teacher. When I confidently said she was patriotic, he replied, “But she gave in.” I wavered. Just like in my Introduction, I couldn’t find enough evidence to answer him. But then I did the S.T.E.A.L. diagram. I had never really thought about the “E” part—how her actions affect others. When I reread the passengers’ speeches, I realized I had only been looking at her lines. I used to read her silence at the inn as weakness. But looking at how the others talked to her first made me see it differently: she is silent because she simply cannot argue with a logic she doesn’t share.</p><p>If my teacher asked me that question again today, I would still say yes, but now I have the exact words to prove it. I would point to her repeated “never, never, never” (Maupassant, 1911, chap. 10) in response to the enemy officer, and the final image where she is rejected “like some improper or useless article” (Maupassant, 1911, chap. 13). These lines show me that her loyalty isn’t a calculated argument, but a deeply felt instinct. In my Introduction I wrote that I am convinced she is patriotic. I still am, but the pull of “But she gave in” haunts me. The difference now is that instead of just feeling sorry for her, I can use the passengers’ actions to understand why she yields.</p><p>Next time I analyze a character, I won’t just say “this character is good” or “this character is bad.” I will look at how they affect the people around them. I will also use this method in my Nomination Essay—using the passengers’ hypocritical actions to prove who she really is, and tracing how their pressure turns her sacrifice into a transaction. Literary analysis, I have learned, is not just about having a strong emotional reaction; it is about finding the words in the text to explain that reaction.</p>`;
+const REFS=`<h3>References</h3><p class="ref">Maupassant, G. de. (1911). <i>Boule de suif; Two little soldiers, Mademoiselle Fifi, and other stories</i> (A. M. C. McMaster, Trans.). Classic. (Original work published 1880)</p><h3>AI disclosure</h3><p><span class="ph">[Your AI disclosure goes here]</span></p>`;
+const works={about:{label:'About me',tabs:[['About me',ABOUT]]},intro:{label:'1 · Introduction',tabs:[['Introduction',INTRO]]},story:{label:'2 · Story map',tabs:[['Story map',CAR],['Text',S_T],['My reflection',S_R],['Story map (text version)',MAP]]},char:{label:'3 · Character analysis',tabs:[['S.T.E.A.L.',STEAL],['Text',C_T],['My reflection',C_R]]},plot:{label:'4 · Plot diagram',tabs:[['Plot mountain',MTN],['Text',P_T],['My reflection',P_R]]},refl:{label:'5 · Reflection',tabs:[['Reflection',REFL],['References & AI disclosure',REFS]]}};
+const $=s=>document.querySelector(s),dlg=$('#dlg'),tip=$('#tip');
+function sel(w,i){const t=$('#tabs');[...t.children].forEach((b,j)=>b.setAttribute('aria-selected',j===i));$('#body').innerHTML=w.tabs[i][1];$('#body').scrollTop=0;fit()}
+function fit(){document.querySelectorAll('.fit').forEach(f=>{const s=Math.max(.45,f.clientWidth/1890),n=f.querySelector('.fitin'),p=f.querySelector('.sp');n.style.transform='scale('+s+')';p.style.width=1890*s+'px';p.style.height=1417*s+'px'})}
+addEventListener('resize',fit);
+function openWork(k,i=0){const w=works[k];$('#dt').textContent=w.label;const t=$('#tabs');t.innerHTML='';w.tabs.forEach((x,j)=>{const b=document.createElement('button');b.setAttribute('role','tab');b.textContent=x[0];b.onclick=()=>sel(w,j);t.append(b)});t.style.display=w.tabs.length>1?'flex':'none';sel(w,i);tip.classList.remove('on');dlg.showModal();fit()}
+$('#x').onclick=()=>dlg.close();
+dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+function show(txt,x,y){tip.textContent=txt;tip.style.left=Math.min(x+16,innerWidth-260)+'px';tip.style.top=(y+16)+'px';tip.classList.add('on')}
+function bind(el,txt,act){const at=()=>{const r=el.getBoundingClientRect();return [r.left+r.width/2,r.top-70]};el.addEventListener('mousemove',e=>show(txt,e.clientX,e.clientY));el.addEventListener('mouseleave',()=>tip.classList.remove('on'));el.addEventListener('focus',()=>{const[a,b]=at();show(txt,a,b)});el.addEventListener('blur',()=>tip.classList.remove('on'));el.addEventListener('click',act);el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();act()}})}
+const road=$('#road'),L=road.getTotalLength(),car=$('#car'),fog=$('#fog'),walk=$('#walk'),sc=$('#scene'),pins=[...document.querySelectorAll('.pin')];
+walk.style.strokeDasharray=L;
+const names={intro:'Read my introduction',story:'Open my story map',char:'Open my character analysis',plot:'Open my plot diagram',refl:'Read my final reflection and references'};
+pins.forEach(g=>{const p=road.getPointAtLength(L*+g.dataset.f);g.setAttribute('transform','translate('+p.x+','+p.y+')');const k=g.dataset.k;bind(g,k?names[k]:'The next assignment will appear here soon.',()=>{if(k)openWork(k)})});
+bind(car,'That’s me on the road. Click to read About me.',()=>openWork('about'));
+const QD=[[.24,'We accept with gratitude, Madame.','The Count, answering Boule de Suif’s offer of food',6],[.40,'to increase her docility.','The narrator, on the ladies’ friendliness at lunch',8],[.46,'I shall never change it; you understand, never, never, never!','Boule de Suif, to the innkeeper about the officer',10],[.58,'almost wished now that the Prussian had secretly found this girl','The narrator, on the travelers the next morning',10],[.68,'like some improper or useless article','The narrator, on how the group treats her',13],[.76,'hoping that no one will notice her','The narrator, on Boule de Suif’s tears',13],[.84,'She weeps for shame.','Mrs. Loiseau, murmuring',13]];
+const qEls=QD.map(d=>{const p=road.getPointAtLength(L*d[0]),el=document.createElement('div');el.className='q';el.innerHTML='“'+d[1]+'”<small>— '+d[2]+' (Maupassant, 1911, chap. '+d[3]+')</small>';el.style.top=(p.y/32)+'%';el.style[p.x<450?'left':'right']='4%';$('#qs').append(el);return{el,y:p.y}});
+function upd(){const s=sc.getBoundingClientRect().width/900,yt=(scrollY+innerHeight*.4)/s;let lo=0,hi=L;for(let i=0;i<20;i++){const m=(lo+hi)/2;if(road.getPointAtLength(m).y<yt)lo=m;else hi=m}const l=lo,p=l/L,a=road.getPointAtLength(l),b=road.getPointAtLength(Math.min(L,l+8)),ang=Math.max(-10,Math.min(10,(b.x-a.x)*.5));car.setAttribute('transform','translate('+a.x+','+a.y+') rotate('+ang+')');walk.style.strokeDashoffset=L-l;fog.setAttribute('y',a.y+200);pins.forEach(g=>g.classList.toggle('on',p>=Math.max(0,+g.dataset.f-.1)));qEls.forEach(q=>q.el.classList.toggle('on',Math.abs(a.y-q.y)<420));$('#hint').style.opacity=scrollY>40?0:1}
+let q=0;addEventListener('scroll',()=>{if(!q)q=requestAnimationFrame(()=>{q=0;upd()})},{passive:true});addEventListener('resize',upd);upd();
+</script>
+</body>
+</html>
